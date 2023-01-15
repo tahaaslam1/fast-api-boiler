@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+    pgsql:
+        image: postgres:14.5-alpine
+        tmpfs:
+          - /tmp
+          - /var/run/postgresql
+        volumes:
+          - ./db:/var/lib/postgresql/data
+        ports:
+          - "0.0.0.0:7778:5432"
+        networks:
+            - dev-network
+        environment:
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+            POSTGRES_DB: test_db
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+          - 8080:8080
+
+networks:
+    dev-network:
+        driver: bridge
